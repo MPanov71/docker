@@ -1,0 +1,635 @@
+<!doctype html>
+<html lang="en">
+    <!-- Заголовок страницы, контейнер для других важных данных (не отображается) -->
+    <head>
+        <!-- Заголовок страницы в браузере -->
+        <title>SoftCase TMS</title>
+        <!-- Подключаем шрифт -->    
+<!--        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+-->
+
+<!--<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">  
+<link href="tabulator/dist/css/bootstrap/tabulator_bootstrap4.css" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css" />
+<link href="awesome/css/all.min.css" rel="stylesheet">
+<script src="tabulator/dist/js/tabulator.min.js"></script>
+<script src="tabulator/dist/js/modules/menu.min.js"></script>
+<script src="tabulator/dist/js/modules/xlsx.full.min.js"></script>
+-->
+        <link href="tabulator/dist/css/tabulator.min.css" rel="stylesheet">
+        <script type="text/javascript" src="tabulator/dist/js/tabulator.min.js"></script>
+        <script type="text/javascript" src="tabulator/dist/js/modules/menu.min.js"></script>
+        <link href="tabulator/dist/css/bootstrap/tabulator_bootstrap4.css" rel="stylesheet">
+        <script type="text/javascript" src="tabulator/dist/js/modules/xlsx.full.min.js"></script>
+
+        <link rel="stylesheet" href="css/style.css" />
+        <link href="awesome/css/all.min.css" rel="stylesheet">
+
+        <!-- Кодировка страницы -->
+        <meta charset="UTF-8">
+
+        <!-- Кодировка страницы -->
+<!--        <meta http-equiv="Content-type" content="text/html;charset=UTF-8" />  -->
+
+    </head>
+    <!-- Отображаемое тело страницы -->
+
+    <body>
+        <div class="mblock" style="height: 100vh; display: flex; flex-direction: column; overflow: hidden;">
+            <div>
+                <div class="header_block" style="display:flex;justify-content: space-between">  
+                    <img src="img/Logo_curves1.png" alt=""> 
+                    <div class="header-right">
+                        <div class="user-info" id="user-info">
+                            <i class="fas fa-user"></i>
+                            <span id="current-user">Пользователь</span>
+                        </div>
+                        <button class="logout-btn" id="logout-btn">  <i class="fas fa-sign-out-alt"></i>Выход</button>
+                        <span class="version" style="margin-right: 10px">Version: 4.0.1 </span>
+                    </div>
+                </div>
+            </div>
+            <div style="display: flex;justify-content: space-between">
+                <div id="work_panel" style="display: flex; font-size: 18px; max-height: 40px;">
+<!--
+                    <span style="padding: 10px; min-width: 100px">Фильтр :</span>
+                    <select id="filter-field" style="font-size: 16px;margin: 5px;min-width: 150px;border: 2px solid black"> 
+                        <option value="tr">Trouter</option> 
+                        <option value="dt">Device</option>  
+                        <option value="dn">Номер ус-ва</option> 
+                        <option value="adr">Адрес</option>  
+                        <option value="op">Канал</option>
+                        <option value="net">Сеть</option>
+                        <option value="sim1">SIM1</option>
+                        <option value="sim2">SIM2</option>
+                        <option value="sim3">SIM3</option>
+                        <option value="src_ip">IP клиента</option>
+                        <option value="ulname">ЮЛ</option>
+                        <option value="tspname">ТСП</option>
+                    </select>
+                    <input id="filter-value" style="font-size: 16px;margin: 5px;padding: 5px;margin-bottom: 5px;border: 2px solid black" type="text" placeholder="значение" autocomplete="off" />   
+                    <button id="ClearFilterButton" type="text" class="clear_filter_button" >Очистить фильтр</button>
+-->
+                    <span id="TotalCount" style="padding: 5px;min-width: 200px;margin-left: 10px;margin-top: 10px"></span>
+                    <div style="padding: 15px; min-width: 180px">
+<!--                        <input id="ShowAll" type="checkbox" checked name="" style="padding: 5px; margin-left: 10px"/>   -->
+                        <input id="ShowAll" type="checkbox" name="" style="padding: 5px; margin-left: 10px"/>
+                        <span style="margin-left: 5px">Все роутеры</span>
+                    </div>  
+                </div>
+                <div id="settings_block"></div>
+            </div>
+            <div style="flex: 1 1 auto; height: 100%; overflow: hidden; padding: 5px">
+                <div id="terminal-table" class="table-striped" style="height: 100%"></div> 
+            </div>
+        </div>
+
+        <!-- Модальное окно с настройками (пользователи, хосты и тд) -->
+        <div id="SettingsWindow" style="display: none;">
+            <div style="display: flex; align-items: center; justify-content: center; min-height: 100%">
+                <div style="min-width: 1100px; min-height: 800px; padding: 10px; background-color: white;  font-size: 24px; border: 2px solid black; border-radius: 10px">
+                    <div id="settings_tabs" style="margin-bottom: 20px; min-height: 500px">
+                        <div class="tab whiteborder">ЮЛ и ТСП</div>
+                        <div class="tab USERS">Пользователи</div>
+                        <div class="tab SC">Сервера TMS</div>  <!-- Закладка для пользователей группы SC-->
+
+                        <div class="tabContent">  <!-- Вкладка ЮЛ и ТСП -->
+                            <div style="display: flex; center; background-color: grey">
+
+                                <div style="flex: 1 1 auto; height: 100%; overflow: hidden; padding: 5px">
+                                    <div id="firms-table" style="height: 100%"></div>   
+                                </div>
+                                <div style="flex: 1 1 auto; height: 100%; overflow: hidden; padding: 5px">
+                                    <div id="branches-table" style="height: 100%"></div> 
+                                </div>
+                                <div id="ULButtonBlock" style="display: flex; flex-direction: column;">
+                                    <button id="delete-firms" type="text"  class="clear_filter_button">Удалить</button>
+                                    <button id="cancel-firms" type="text"  class="clear_filter_button">Отменить</button>
+                                    <button id="save-firms" type="text"  class="clear_filter_button">Сохранить</button>   
+                                </div>
+                            </div>
+
+                            <div id="AddULBlock" style="display: flex; "> 
+                                <input id="firm-id" style="max-width: 50px; margin-top: 5px; max-height: 35px; font-size: 24px; padding: 5px; border: 2px solid black" type="number"  placeholder="ID">   
+                                <input id="firm-name" style="max-width: 230px; margin: 5px; max-height: 35px; font-size: 24px; padding: 5px; border: 2px solid black" type="text"     placeholder="Название ЮЛ">  
+                                <button id="add-firm" type="text"  class="clear_filter_button">Добавить</button>
+                                <input id="branch-id" style="max-width: 50px; margin-left: 10px; margin-top: 5px; max-height: 35px; font-size: 24px; padding: 5px; border: 2px solid black" type="number"  placeholder="ID">   
+                                <input id="branch-name" style="max-width: 230px; margin-left: 5px;margin-top: 5px; max-height: 35px; font-size: 24px; padding: 5px;    margin-bottom: 5px; border: 2px solid black" type="text"    placeholder="Название ТСП"> 
+                                <button id="add-branch" type="text"  class="clear_filter_button">Добавить</button>
+                            </div>
+                            
+                        </div>
+
+
+                        <div class="tabContent hide">  <!-- Вкладка Пользователи -->
+                            <div style="display: flex; background-color: grey">
+                                <div style="flex: 1 1 auto; height: 100%; overflow: hidden; padding: 5px">
+                                    <div id="users-table" style="height: 100%"></div> 
+                                </div>
+                                <div id="UsersButtonBlock" style="display: flex; flex-direction: column;">
+                                    <button id="delete-user" type="text"  class="clear_filter_button">Удалить</button>
+                                    <button id="cancel-users" type="text"  class="clear_filter_button">Отменить</button>
+                                    <button id="save-users" type="text"  class="clear_filter_button">Сохранить</button> 
+                                </div>
+                            </div>
+                            <div id="AddUsersBlock" style="display: flex; flex-direction: row;"> 
+                                <input id="tid-value" style="max-width: 180px; margin: 5px; max-height: 30px; font-size: 24px; padding: 5px;    margin-bottom: 5px; border: 2px solid black" type="text"    placeholder="Telegram ID">  
+                                <input id="login-value" style="max-width: 200px; margin: 5px; max-height: 30px; font-size: 24px; padding: 5px;  margin-bottom: 5px; border: 2px solid black" type="text"    placeholder="Login">    
+                                <input id="psw-value" style="max-width: 200px; margin: 5px; max-height: 30px; font-size: 24px; padding: 5px;    margin-bottom: 5px; border: 2px solid black" type="password"    placeholder="password">         
+                                <select id="group-field" style="margin: 5px; font-size: 24px; max-height: 30px;min-width: 100px;    border: 2px solid black">   
+                                </select>
+                                <select id="role-field" style="margin: 5px; font-size: 24px; max-height: 30px; min-width: 100px; border: 2px solid black">  
+                                    <option value="User">User</option>
+                                    <option value="Operator">Operator</option>
+                                    <option value="Admin">Admin</option>
+                                    <option value="SuperUser">SuperUser</option>
+                                </select>
+                                <button id="add-user" type="text"  class="clear_filter_button">Добавить</button>
+                            </div>
+                        </div>
+                        <div class="tabContent hide">  <!-- Вкладка Сервера TMS -->
+                            <div style="    display: flex; background-color: grey">
+                                <div style="flex: 1 1 auto; height: 100%; overflow: hidden; padding: 5px">
+                                    <div id="tms-table" style="height: 100%"></div> 
+                                </div>
+                                <div id="HostsButtonBlock" style="display: flex; flex-direction: column;">
+                                    <button id="delete-tms" type="text"  class="clear_filter_button">Удалить</button>
+                                    <button id="cancel-tms" type="text"  class="clear_filter_button">Отменить</button>
+                                    <button id="save-tms" type="text"  class="clear_filter_button">Сохранить</button> 
+                                </div>
+                            </div>
+                            <div id="AddHostsBlock">
+                                <input id="tms-name" style="max-width: 300px; margin: 5px; max-height: 35px; font-size: 24px; padding: 5px;   margin-bottom: 5px; border: 2px solid black" type="text"    placeholder="Имя TMS"/> 
+                                <input id="tms-id" style="max-width: 150px; margin: 5px; max-height: 35px; font-size: 24px; padding: 5px;    margin-bottom: 5px; border: 2px solid black" type="text"    placeholder="id хоста"/>    
+                                <input id="tms-address" style="max-width: 300px; margin: 5px; max-height: 35px; font-size: 24px; padding: 5px;    margin-bottom: 5px; border: 2px solid black" type="text"    placeholder="IP-адрес TMS"/>    
+                                <input id="tms-port" style="max-width: 120px; margin: 5px; max-height: 35px; font-size: 24px; padding: 5px;   margin-bottom: 5px; border: 2px solid black" type="text"    placeholder="Port TMS"/>    
+                                <button id="add-tms" type="text"  class="clear_filter_button">Добавить</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Конец модального окна с настройками (пользователи, хосты и тд) -->
+
+        <!-- Модальное окно с настройками роутера -->
+        <div id="ConfigurationWindow" style="display: none">
+            <div style="display: flex; align-items: center; justify-content: center; min-height: 100%">
+                <div style="min-width: 1100px; padding: 10px; background-color: white; font-size: 24px; border: 2px solid black; border-radius: 10px">
+                    <div style="display: flex; justify-content: center">
+                        <div id="ConfigurationTitle" style="margin: 5px; font-size: 32px">Конфигурация</div>
+                    </div>
+
+                    <div id="config_tabs" style="margin-bottom: 10px">
+                        <div class="tab_config whiteborder">General</div>
+                        <div class="tab_config L3">Connectors</div>
+                        <div class="tab_config L3">Listeners</div>
+                        <div class="tab_config ClientTab">Network</div>
+                        <div class="tab_config ">SCPN</div>
+                        <div class="tab_config ClientTab">Device</div>
+                        <div class="tab_config ">Comment</div>
+
+                        <div class="tabContentConfig"> <!-- Общие настройки-->
+                            <div style="display: flex; flex-direction: column; background-color: grey; padding: 5px">
+                                <div style="display: flex;  justify-content: center">
+                                <div style="background-color: white">
+                                <div style="display: flex; flex-direction:column">
+                                    <p style="margin: 10px;height: 30px">Статус узла:</p>
+                                    <p style="margin: 10px;height: 30px">Адрес установки:</p>
+                                    <p style="margin: 10px;height: 30px">MAC:</p>
+                                    <p class="ServerParams" style="margin: 10px;height: 30px">Listening port:</p>
+                                    <p class="ServerParams" style="margin: 10px;height: 30px">Server address:</p>
+                                    <p style="margin: 10px;height: 30px">Параметры TMS:</p>
+                                    <p class="ServerParams" style="margin: 10px;height: 30px">Сетевой интерфейс:</p>
+                                </div>
+                                </div>
+                                <div style="flex: 1 1 auto; background-color: white">
+                                <div style="display: flex; flex-direction:column">
+                                    <div style="margin: 10px">
+                                        <input id="Status" type="checkbox" name="agreement" class="checkbox__input _req"/>
+                                        <label for="Status" class="checkbox__label"><span>Разрешить работу этого роутера</span></label>
+                                    </div>
+                                    <div style="margin: 10px">
+                                        <input id="address" type="text" style="border: 2px solid black; height: 30px; min-width: 750px; font-size: 18px; padding: 10px" placeholder="Например, 129085, Москва, ул.Годовикова, 9" autocomplete="off" />
+                                    </div>
+                                    <div style="margin: 10px">
+                                        <input id="MAC" type="text" style="border: 2px solid black; height: 30px; font-size: 18px; padding: 10px"/>
+                                    </div>
+                                    <div class="ServerParams" style="margin: 10px">
+                                        <input id="PortSrv" type="text" style="border: 2px solid black; max-width: 200px; height: 30px; font-size: 18px; padding: 10px" placeholder="Например, 3010"/>
+                                    </div>
+                                    <div class="ServerParams" style="margin: 10px">
+                                        <input id="AddrSrv" type="text" style="border: 2px solid black; min-width: 750px; height: 30px; font-size: 18px; padding: 10px" placeholder="Адрес сервера для межсерверного обмена, не 127.0.0.1"/>
+                                    </div>
+                                    <div>
+                                        <div style="display: flex; margin: 10px">
+                                        <input id="TMS_IP" type="text" style="border: 2px solid black; min-width: 300px; height: 30px; font-size: 18px; padding: 10px; margin-right: 10px" placeholder="192.168.1.20 (или tms.host.ru)"/>
+                                        <p style="margin-right: 5px; padding-top: 5px">port: </p>
+                                        <input id="TMS_Port" type="text" style="border: 2px solid black; max-width: 100px; height: 30px; font-size: 18px; padding: 10px"/>
+                                    </div>
+
+                                    <div class="ServerParams" style="display: flex; margin: 10px; margin-top: 20px">
+                                        <input class="ServerParams" id="ITF" type="text" style="border: 2px solid black; max-width: 200px; height: 30px; font-size: 18px; padding: 10px; margin-right: 10px" placeholder="Например, eth0"/>
+                                     </div>
+
+                                    </div>
+                                </div>
+                                </div>
+                                </div>
+                                <div class="ClientParams" style="background-color: white">
+                                <div style="background-color: white">
+                                    <p style="margin: 10px">Адреса серверов:</p>
+                                </div>
+                                <div id="servers-table" style="height: 100%"></div> 
+                                <div style="display: flex; justify-content: center; background-color: white; padding: 5px">
+                                    <div style="margin: 5px">Server IP: 
+                                        <input id="server_ip_value" type="text" style="border: 2px solid black; height: 30px; min-width: 300px; font-size: 18px; padding: 0px 5px;" placeholder="192.168.1.11 (или server1.host.ru)"/>
+                                    </div>
+                                    <div style="margin: 5px">Port: 
+                                        <input id="server_port_value" type="text" style="border: 2px solid black; height: 30px; max-width: 100px; font-size: 18px; padding: 0px 5px;"/>
+                                    </div>
+                                    <button id="add-server" type="text"  class="clear_filter_button">Добавить</button>
+
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tabContentConfig hide"> <!-- Connectors -->
+                            <div style="display: flex; flex-direction: column; background-color: grey; padding: 5px">
+                                <div style="display: flex;  justify-content: center">
+                                    <div style="background-color: white">Настройки вызывающих интерфейсов
+                                        <div id="CONNECTORS-table"></div> 
+                                    </div>
+                                </div>
+                                <div style="display: flex; padding: 5px;background-color: white">
+                                    <p style="margin-top: 5px">ITF:</p>
+                                    <input id="con_num" type="text" style="margin-top: 5px; border: 2px solid black; height: 30px; max-width: 70px; font-size: 18px; padding: 0px 5px;"/>
+                                    <p style="margin-top: 5px; margin-left: 5px;">Main:</p>
+                                    <input id="con_main_ip_value" type="text" style="margin-top: 5px; border: 2px solid black; height: 30px; max-width: 160px; font-size: 18px; padding: 0px 5px;"/>
+                                    <p style="margin-left: 5px; margin-right: 5px; margin-top: 5px">:</p>
+                                    <input id="con_main_port_value" type="text" style="margin-top: 5px; border: 2px solid black; height: 30px; max-width: 70px; font-size: 18px; padding: 0px 5px;"/>
+                                    <p style="margin-left: 5px; margin-top: 5px">Backup:</p>
+                                    <input id="con_backup_ip_value" type="text" style="margin-top: 5px;border: 2px solid black; height: 30px; max-width: 160px; font-size: 18px; padding: 0px 5px;"/>
+                                    <p style="margin-left: 5px; margin-right: 5px; margin-top: 5px">:</p>
+                                    <input id="con_backup_port_value" type="text" style="margin-top: 5px;border: 2px solid black; height: 30px; max-width: 70px; font-size: 18px; padding: 0px 5px;"/>
+                                    <select id="con_type" style="font-size: 16px;margin-left: 5px;margin-top: 5px;min-width: 60px;height: 30px;border: 2px solid black">    
+                                        <option value="1">TCP</option>    
+                                        <option value="2">UDP</option>    
+                                    </select>
+                                    <button id="add-connector" type="text"  class="clear_filter_button">Добавить</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tabContentConfig hide"> <!-- Listeners -->
+                            <div style="display: flex; flex-direction: column; background-color: grey; padding: 5px">
+                                <div style="display: flex;  justify-content: center">
+                                    <div style="background-color: white">Настройки слушающих интерфейсов
+                                        <div id="LISTENERS-table" style="height: 100%"></div> 
+                                    </div>
+                                </div>
+                                <div style="display: flex; padding: 5px;background-color: white">
+                                    <p style="margin-top: 5px; margin-left: 5px;">Address:</p>
+                                    <input id="lsn_ip_value" type="text" style="margin-top: 5px; border: 2px solid black; height: 30px; max-width: 160px; font-size: 18px; padding: 0px 5px;"/>
+                                    <p style="margin-left: 5px; margin-right: 5px; margin-top: 5px">:</p>
+                                    <input id="lsn_port_value" type="text" style="margin-top: 5px; border: 2px solid black; height: 30px; max-width: 70px; font-size: 18px; padding: 0px 5px;"/>
+                                    <p style="margin-left: 5px; margin-top: 5px">dstNode:</p>
+                                    <input id="dst_node_value" type="text" style="margin-top: 5px;border: 2px solid black; height: 30px; max-width: 70px; font-size: 18px; padding: 0px 5px;"/>
+                                    <p style="margin-left: 5px; margin-right: 5px; margin-top: 5px">dstITF:</p>
+                                    <input id="dst_itf_value" type="text" style="margin-top: 5px;border: 2px solid black; height: 30px; max-width: 70px; font-size: 18px; padding: 0px 5px;"/>
+                                    <select id="lsn_type" style="font-size: 16px;margin-left: 5px;margin-top: 5px;min-width: 60px;height: 30px;border: 2px solid black">    
+                                        <option value="1">TCP</option>    
+                                        <option value="2">UDP</option>    
+                                    </select>
+                                    <button id="add-listener" type="text"  class="clear_filter_button">Добавить</button>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tabContentConfig hide"> <!-- Network -->
+                            <div style="display: flex; flex-direction: column; height: 610px; background-color: grey; padding: 5px">
+                                <div style="display: flex; padding: 5px;  height: 610px; background-color: white">
+
+                                <div style="flex: 1 1 auto; background-color: white">
+                                <div style="display: flex; flex-direction:column">
+                                    <div style="background-color: white">Сетевые настройки на роутере
+                                        <div style="flex: 1 1 auto; margin-top: 15px;  padding: 5px;background-color: #5089fa">
+                                        <div style="display: flex;">
+                                            <p style="margin-top: 7px; margin-left: 10px;">WAN</p>
+                                            <p style="margin-top: 7px; margin-left: 15px;">IP:</p>
+                                            <input id="WAN_addr" type="text" style="margin-top: 5px; margin-left: 5px; border: 2px solid black; height: 30px; max-width: 160px; font-size: 18px; padding: 0px 5px;"/>
+                                            <p style="margin-top: 7px; margin-left: 10px;">Mask:</p>
+                                            <input id="WAN_mask" type="text" style="margin-top: 5px; margin-left: 5px; border: 2px solid black; height: 30px; max-width: 160px; font-size: 18px; padding: 0px 5px;"/>
+                                            <p style="margin-top: 7px; margin-left: 10px;">GW:</p>
+                                            <input id="WAN_gw" type="text" style="margin-top: 5px; margin-left: 5px; border: 2px solid black; height: 30px; max-width: 160px; font-size: 18px; padding: 0px 5px;"/>
+                                            <div style="margin-top: 7px; margin-left: 150px">
+                                                <input id="DHCP_Status" type="checkbox" name="dhcp" class="checkbox__input _req"/>
+                                                <label for="DHCP_Status" class="checkbox__label"><span>DHCP</span></label>
+                                            </div>
+                                        </div>
+                                        </div>
+                                        <div style="flex: 1 1 auto;  padding: 5px;background-color: #5089fa">
+                                        <div style="display: flex;">
+                                            <p style="margin-top: 7px; margin-left: 10px;">DNS</p>
+                                            <p style="margin-top: 7px; margin-left: 17px;">IP:</p>
+                                            <input id="DNS_addr" type="text" style="margin-top: 5px; margin-left: 8px; border: 2px solid black; height: 30px; max-width: 160px; font-size: 18px; padding: 0px 5px;"/>
+                                        </div>
+                                        </div>
+                                        <div style="flex: 1 1 auto; margin-top: 10px;  padding: 5px;background-color: yellow">
+                                        <div style="display: flex;">
+                                            <p style="margin-top: 7px; margin-left: 10px;">LAN</p>
+                                            <p style="margin-top: 7px; margin-left: 20px;">IP:</p>
+                                            <input id="LAN_addr" type="text" style="margin-top: 5px; margin-left: 8px; border: 2px solid black; height: 30px; max-width: 160px; font-size: 18px; padding: 0px 5px;"/>
+                                            <p style="margin-top: 7px; margin-left: 10px;">Mask:</p>
+                                            <input id="LAN_mask" type="text" style="margin-top: 5px; margin-left: 5px; border: 2px solid black; height: 30px; max-width: 160px; font-size: 18px; padding: 0px 5px;"/>
+                                            <p style="margin-top: 7px; margin-left: 10px;">GW:</p>
+                                            <input id="LAN_gw" type="text" style="margin-top: 5px; margin-left: 5px; border: 2px solid black; height: 30px; max-width: 160px; font-size: 18px; padding: 0px 5px;"/>
+
+                                            <div style="margin-top: 7px; margin-left: 150px">
+                                                <input id="LAN_DHCP_Status" type="checkbox" name="LAN_dhcp" class="checkbox__input _req"/>
+                                                <label for="LAN_DHCP_Status" class="checkbox__label"><span>DHCP</span></label>
+                                            </div>   
+                                    
+                                        </div>
+                                        </div>
+                                        <div style="flex: 1 1 auto; margin-top: 10px;  padding: 5px;background-color: white">
+                                        <div style="display: flex;">
+                                            <div style="margin-top: 7px; margin-left: 5px">
+                                                <input id="WiFi_Status" type="checkbox" name="WiFi" class="checkbox__input _req"/>
+                                                <label for="WiFi_Status" class="checkbox__label"><span>WiFi</span></label>
+                                            </div>
+                                            <p style="margin-top: 7px; margin-left: 20px;">SSID:</p>
+                                            <input id="WIFI_ssid" type="text" style="margin-top: 5px; margin-left: 5px; border: 2px solid black; height: 30px; max-width: 160px; font-size: 18px; padding: 0px 5px;"/>
+                                            <p style="margin-top: 7px; margin-left: 10px;">PSW:</p>
+                                            <input id="WIFI_psw" type="text" style="margin-top: 5px; margin-left: 5px; border: 2px solid black; height: 30px; max-width: 160px; font-size: 18px; padding: 0px 5px;"/>
+                                            <div style="margin-top: 7px; margin-left: 15px">
+                                                <input id="Forwarding" type="checkbox" name="Forwarding" class="checkbox__input _req"/>
+                                                <label for="Forwarding" class="checkbox__label"><span>Forwarding</span></label>
+                                            </div>
+                                            <div style="margin-top: 3px; margin-left: 15px">
+                                                <select id="wMode" name="wMode" style="font-size: 16px;margin-left: 5px;min-width: 120px;height: 32px;border: 2px solid black">    
+                                                </select>
+                                            </div>
+                                        </div>
+                                        </div>
+                                    </div>
+                                    <div style="margin-top: 15px; height: 3px;background-color: grey">
+                                    </div>
+                                    <div style="margin-top: 10px; background-color: white">Информация о модеме:
+                                        <div style="flex: 1 1 auto; margin-top: 15px;  padding: 5px;">
+                                        <div style="display: flex;">
+                                            <p style="margin-top: 5px; margin-left: 10px;">MODEM: </p>
+                                            <span id="Modem" style="margin-left: 15px;margin-top: 5px"></span>
+                                        </div>
+                                        <div style="display: flex;">
+                                            <p style="margin-top: 10px; margin-left: 10px;">Приоритет</p>
+                                        </div>
+                                        <div style="display: flex;">
+                                            <input id="simselect1" checked type="radio" name="sim" style="margin-top: 15px; margin-left: 50px;"/>
+                                            <p style="margin-top: 10px; margin-left: 80px;">SIM1:</p>
+                                            <span id="SIM1" style="margin-left: 15px;margin-top: 10px"></span>
+                                        </div>
+                                        <div style="display: flex;">
+                                            <input id="simselect2" type="radio" name="sim" style="margin-top: 15px; margin-left: 50px;"/>
+                                            <p style="margin-top: 10px; margin-left: 80px;">SIM2:</p>
+                                            <span id="SIM2" style="margin-left: 15px;margin-top: 10px"></span>
+                                        </div>
+                                        <div style="display: flex;">
+                                            <input id="simselect3" type="radio" name="sim" style="margin-top: 15px; margin-left: 50px;"/>
+                                            <p style="margin-top: 10px; margin-left: 80px;">SIM3:</p>
+                                            <span id="SIM3" style="margin-left: 15px;margin-top: 10px"></span>
+                                        </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tabContentConfig hide"> <!-- SCPN -->
+                            <div style="display: flex; flex-direction: column; height: 610px; background-color: grey; padding: 5px">
+                                <div style="display: flex; padding: 5px;  height: 610px; background-color: white">
+                                    <div style="flex: 1 1 auto; background-color: white">
+                                        <div style="display: flex; flex-direction:column">
+                                                <div style="flex: 1 1 auto;  margin-top: 15px; padding: 5px">
+                                                <div style="display: flex;">
+                                                    <p style="margin-top: 5px; margin-left: 5px; margin-right: 5px;">SCPN:</p>
+                                                    <div style="margin-top: 5px; margin-left: 2px">
+                                                        <input id="scpn" type="checkbox" name="scpn" class="checkbox__input _req"/>
+                                                    </div>
+                                                </div>
+                                                </div>
+        
+                                                <div class="ServerParams" style="flex: 1 1 auto;  margin-top: 15px; padding: 5px">
+                                                    <div style="display: flex;">
+                                                        <p style="margin-top: 10px; margin-left: 5px; margin-right: 5px;">AS:</p>
+                                                        <div>
+                                                            <div style="display: flex; margin: 5px">
+                                                                <input id="asbgp" type="text" style="border: 2px solid black; max-width: 100px; height: 30px; font-size: 18px; padding: 5px; margin-right: 10px" placeholder="65177"/>
+                                                                <p style="margin-right: 5px; padding-top: 5px"> BGP id: </p>
+                                                                <input id="idbgp" type="text" style="border: 2px solid black; max-width: 150px; height: 30px; font-size: 18px; padding: 5px" placeholder="10.219.58.12"/>
+                                                            </div>
+            
+                                                        </div>
+                                                    </div>
+                                                </div>
+        
+                                                <div class="ServerParams" style="flex: 1 1 auto;  margin-top: 5px; padding: 5px">
+                                                    <div style="display: flex;">
+                                                        <p style="margin-top: 10px; margin-left: 5px; margin-right: 5px;">BGP Gate:</p>
+                                                        <div>
+                                                            <div style="display: flex; margin: 5px">
+                                                                <input id="gwbgp" type="text" style="border: 2px solid black; max-width: 100px; height: 30px; font-size: 18px; padding: 5px; margin-right: 10px" placeholder="65122"/>
+                                                                <p style="margin-right: 5px; padding-top: 5px"> BFD port: </p>
+                                                                <input id="pbfd" type="text" style="border: 2px solid black; max-width: 100px; height: 30px; font-size: 18px; padding: 5px" placeholder="4784"/>
+                                                            </div>
+            
+                                                        </div>
+                                                    </div>
+                                                </div>
+        
+        
+                                                <div class="ServerParams" style="background-color: white">
+                                                    <div style="background-color: white">
+                                                        <p style="margin: 10px">Адреса BGP-шлюзов:</p>
+                                                    </div>
+                                                    <div id="BGP-table" style="height: 100%"></div>   
+                                                    <div style="display: flex; justify-content: center; background-color: white; padding: 5px">
+                                                        <div style="margin: 5px">BGP IP: 
+                                                            <input id="bgp_ip_value" type="text" style="border: 2px solid black; height: 30px; min-width: 300px; font-size: 18px; padding: 0px 5px" placeholder="10.219.58.250 (или bgp1.host.ru)"/>
+                                                        </div>
+                                                        <div style="margin: 5px">Port: 
+                                                            <input id="bgp_port_value" type="text" style="border: 2px solid black; height: 30px; max-width: 100px; font-size: 18px; padding: 0px 5px" placeholder="179"/>
+                                                        </div>
+                                                        <button id="AddBGPButton" type="text"  class="clear_filter_button">Добавить</button>
+                                                    </div>
+                                                </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tabContentConfig hide"> <!-- Устройство -->
+                            <div style="display: flex; flex-direction: column; height: 610px; background-color: grey; padding: 5px">
+                                <div style="display: flex; padding: 5px;  height: 610px; background-color: white">
+
+                                <div style="flex: 1 1 auto; background-color: white">
+                                <div style="display: flex; flex-direction:column">
+                                        <div style="flex: 1 1 auto; margin-top: 15px;  padding: 5px">
+                                        <div style="display: flex;">
+                                            <p style="margin-top: 5px">Тип устройства:</p>
+                                            <select id="dev_type" style="font-size: 16px;margin-left: 5px;margin-top: 5px;min-width: 60px;height: 30px;border: 2px solid black">    
+                                            </select>
+                                            <p class="ClientParams" style="margin-top: 5px; margin-left: 15px; margin-right: 5px;">Модель устройства:</p>
+                                            <input id="dev_model" class="ClientParams" type="text" style="margin-top: 5px; border: 2px solid black; height: 30px; max-width: 160px; font-size: 18px; padding: 0px 5px;"/>
+                                            <p class="ClientParams" style="margin-left: 15px; margin-right: 5px; margin-top: 5px">Номер устройства:</p>
+                                            <input id="dev_num" class="ClientParams" type="text" style="margin-top: 5px; border: 2px solid black; height: 30px; max-width: 90px; font-size: 18px; padding: 0px 5px;"/>
+                                        </div>
+                                        </div>
+
+                                        <div style="flex: 1 1 auto; margin-top: 10px;  padding: 5px">
+                                        <div style="display: flex;">
+                                            <p class="ClientParams" style="margin-top: 5px; margin-left: 5px; margin-right: 5px;">ЮрЛицо:</p>
+                                            <select id="ul" class="ClientParams" type="text" style="margin-top: 5px; border: 2px solid black; height: 30px; min-width: 300px; font-size: 18px; padding: 0px 5px;">
+                                            </select>
+                                            <p class="ClientParams" style="margin-left: 15px; margin-right: 5px; margin-top: 5px">ТСП:</p>
+                                            <select id="tsp" class="ClientParams" type="text" style="margin-top: 5px; border: 2px solid black; height: 30px; min-width: 300px; font-size: 18px; padding: 0px 5px;">
+                                            </select>
+                                        </div>
+                                        </div>
+
+                                        <div style="flex: 1 1 auto;  margin-top: 10px; padding: 5px">
+                                        <div id="IPspan" style="display: flex;">
+                                            <p style="margin-top: 5px; margin-left: 5px; margin-right: 5px;">IP-адрес устройства на сервере:</p>
+                                            <input id="RouterIP" type="text" style="margin-top: 5px; border: 2px solid black; height: 30px; max-width: 160px; font-size: 18px; padding: 0px 5px;"/>
+                                            <div style="margin-top: 5px; margin-left: 30px">
+                                                <input id="IP_Managment_Enable" type="checkbox" name="ipme" class="checkbox__input _req"/>
+                                                <label for="IP_Managment_Enable" class="checkbox__label"><span>Разрешить управлять</span></label>
+                                            </div>
+                                        </div>
+                                        </div>
+                                </div>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tabContentConfig hide"> <!-- Comment -->
+                            <div style="display: flex; flex-direction: column; height: 610px; background-color: grey; padding: 5px">
+                                <div style="display: flex; padding: 5px;  height: 610px; background-color: white">
+                                    <textarea id="Comment_id" cols="40" rows="5" style="border: 2px solid black; resize: none; min-height:100%; min-width: 100%; font-size: 18px; padding: 5px;"></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div id="ConfigButtonBlock">
+                        <div style="display: flex; justify-content: center">
+                            <button id="SaveConfigurationButton" type="text"  class="clear_filter_button">Сохранить</button>
+                            <div style="min-width: 100px"></div>
+                            <button id="CancelConfigurationButton" type="text"  class="clear_filter_button">Отменить</button>
+                            <div style="min-width: 100px"></div>
+                            <button id="GroupConfigurationButton" class="ClientParams" style="display: none" type="text"  class="clear_filter_button">Диапазон</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Конец модального окна с настройками роутера -->
+
+        <!-- Модальное окно с групповыми настройками роутеров -->
+        <div id="GroupConfigurationWindow" style="display: none">
+            <div style="display: flex; align-items: center; justify-content: center; min-height: 100%">
+                <div style="min-width: 1100px; padding: 10px; background-color: white; font-size: 24px; border: 2px solid black; border-radius: 10px">
+                    <div style="display: flex; flex-direction:column; justify-content: center">
+                        <div style="display: flex; justify-content: center">
+                            <div style="margin: 5px; font-size: 32px; color: red;">Внимание!</div>
+                        </div>
+                        <div style="display: flex; justify-content: center">
+                            <div style="margin: 5px; font-size: 32px">Вы собираетесь изменить настройки для диапазона роутеров!</div>
+                        </div>
+                        <div style="display: flex; justify-content: center">
+                            <div style="margin: 5px; font-size: 20px">( Диапазон из 1000 роутеров будет обновляться примерно 10мин )</div>
+                        </div>
+                        <div style="display: flex; justify-content: center">
+                            <div style="margin: 5px; font-size: 32px"> </div>
+                        </div>
+                    </div>
+                    <div style="display: flex; flex-direction: column; background-color: grey; padding: 5px; min-height: 100%">
+                        <div style="display: flex;  justify-content: center">
+                        <div style="background-color: white;  min-width: 100%">
+                            <div style="flex: 1 1 auto;  padding: 5px">
+                            <div style="display: flex; justify-content: center">
+                                <p style="margin-top: 7px; margin-left: 30px;">Начиная с </p>
+                                <input id="FROM" type="number" style="margin-top: 5px; margin-left: 8px; border: 2px solid black; height: 30px; max-width: 100px; font-size: 18px; padding: 0px 5px;"/>
+                                <p style="margin-top: 7px; margin-left: 30px;">Заканчивая </p>
+                                <input id="TO" type="number" style="margin-top: 5px; margin-left: 8px; border: 2px solid black; height: 30px; max-width: 100px; font-size: 18px; padding: 0px 5px;"/>
+                            </div>
+                            </div>
+
+
+
+                            <div style="flex: 1 1 auto;  padding: 5px">
+                            <div style="display: flex; justify-content: center">
+                                <p style="margin-top: 7px; margin-left: 30px;">Список номеров роутеров: </p>
+                            </div>
+                            </div>
+
+
+
+                            <div style="flex: 1 1 auto;  padding: 5px">
+                            <div style="display: flex; justify-content: center">
+
+                                <div style="    display: flex; background-color: grey">
+                                    <div style="flex: 1 1 auto; height: 100%; overflow: hidden; padding: 5px">
+                                        <div id="NODES-table" style="height: 100%"></div> 
+                                    </div>
+                                    <div id="HostsButtonBlock" style="display: flex; flex-direction: column;">
+                                        <input  id="NODE" type="number" style="margin-top: 5px; margin-left: 8px; border: 2px solid black; height: 30px; max-width: 145px; font-size: 18px; padding: 0px 5px;"/>
+                                        <button id="AddNodeButton" type="text"  class="clear_filter_button">Добавить</button>
+                                        <button id="DelNodeButton" type="text"  class="clear_filter_button">Удалить</button>
+                                    </div>
+                                </div>
+
+                            </div>
+                            </div>
+
+
+                            <div style="margin: 10px">
+                                <input id="GroupConnectors" type="checkbox" name="agreement" class="checkbox__input _req"/>
+                                <label for="GroupConnectors" class="checkbox__label"><span>Изменить параметры вызывающих правил (connectors)</span></label>
+                            </div>
+                            <div style="margin: 10px">
+                                <input id="GroupListeners" type="checkbox" name="agreement" class="checkbox__input _req"/>
+                                <label for="GroupListeners" class="checkbox__label"><span>Изменить параметры слушающих правил (listeners)</span></label>
+                            </div>
+                            <div style="margin: 10px">
+                                <input id="GroupServers" type="checkbox" name="agreement" class="checkbox__input _req"/>
+                                <label for="GroupServers" class="checkbox__label"><span>Изменить адреса серверов</span></label>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                    <div id="GroupButtonBlock">
+                        <div style="display: flex; justify-content: center">
+                            <button id="SaveGroupConfigurationButton" type="text"  class="clear_filter_button">Сохранить</button>
+                            <div style="min-width: 100px"></div>
+                            <button id="CancelGroupConfigurationButton" type="text"  class="clear_filter_button">Отменить</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Конец модального окна с групповыми настройками роутеров -->
+
+        <script src="main.js"></script>
+        
+        </script>
+    </body>
+</html>

@@ -1,0 +1,17 @@
+FROM alpine:latest
+
+#RUN apk update && apk upgrade && apk add --no-cache libc6-compat && apk add --no-cache libstdc++ && apk add --no-cache libgcc && apk add --no-cache curl && apk add --no-cache procps
+#RUN apk add --no-cache sqlite-dev && apk add --no-cache procpc
+
+RUN apk update && \
+    apk add --no-cache \
+        libc6-compat \
+        libstdc++ \
+        libgcc \
+        curl \
+        sqlite-dev
+
+COPY sctms/keys.sksn ./
+COPY sctms/sctms ./
+
+ENTRYPOINT ["./sctms"]

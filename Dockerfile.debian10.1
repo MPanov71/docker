@@ -1,0 +1,10 @@
+#FROM alpine
+
+#--- For Debian development ----
+FROM debian:10
+RUN apt update && apt -y upgrade && apt -y install build-essential
+COPY compile.sh ./
+ENTRYPOINT ["./compile.sh"]
+#--- 
+
+

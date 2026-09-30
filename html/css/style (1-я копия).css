@@ -1,0 +1,363 @@
+/*Обнуление*/
+*{padding: 0;margin: 0;border: 0;}
+*,*:before,*:after{-moz-box-sizing: border-box;-webkit-box-sizing: border-box;box-sizing: border-box;}
+:focus,:active{outline: none;}
+a:focus,a:active{outline: none;}
+nav,footer,header,aside{display: block;}
+html,body{height:100%;width:100%;font-size:100%;line-height:1;font-size:14px;-ms-text-size-adjust:100%;-moz-text-size-adjust:100%;-webkit-text-size-adjust:100%;}
+input,button,textarea{font-family:inherit;}
+input::-ms-clear{display: none;}
+button{cursor: pointer;}
+button::-moz-focus-inner {padding:0;border:0;}
+a,a:visited{text-decoration: none;}
+a:hover{text-decoration: none;}
+ul li{list-style: none;}
+img{vertical-align: top;}
+h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight: inherit;}
+/*--------------------*/
+
+// Убираем стрелки в поле ввода number
+::-webkit-textfield-decoration-container { }
+::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+}
+::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+}
+
+body{
+    font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+}
+
+/* Стиль для блока шапки с логотипом */
+.header_block {
+	height: 60px;
+	border-radius: 15px;
+	box-shadow: 0 0 10px #000;
+	margin: 10px;
+}
+.header_block img{
+	height: 60px;
+}
+.main_block{
+	height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Стиль формы ввода имени и пароля */
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+	background-color: #c8cfcf;
+	height: 500px;
+	width: 500px;
+	border-radius: 15px;
+	box-shadow: 0 0 10px #000;
+	margin: 0px auto;
+	padding: 60px 0;
+}
+.form_title{
+	font-size: 25px;
+	font-weight: 700;
+	margin: 0px 0px 30px 70px;
+}
+.form_item{
+	margin: 0px 0px 20px 80px;
+}
+.form_label{
+	font-size: 18px;
+	display: block;
+	margin: 0px 0px 10px 0px;
+}
+.form_input{
+	height: 50px;
+	padding: 0px 10px;
+	border-radius: 5px;
+	width: 80%;
+	font-size: 20px;
+	transition: all 0.5s ease 0s;
+}
+.form_input:focus {
+	box-shadow: 0 0 15px black;
+}
+
+/* Стиль кнопки отправки имени и пароля */
+.login-btn {
+	width: 60%;
+	margin: 60px 0px 10px 100px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	min-height: 60px;
+	background-color: #7a956b;
+	color: #fff;
+	font-size: 18px;
+	text-transform: uppercase;
+	letter-spacing: 2px;
+	font-weight: 700;
+	cursor: pointer;
+	border-radius: 20px;
+	box-shadow: 0 5px 0 #161b13;
+	transition: background-color 0.3s ease 0s;
+	position: relative;
+	top: 0px;
+}
+.login-btn:hover {
+	background-color: #4f6146;
+}
+.login-btn:active{
+	top: 6px;
+	box-shadow: 0 2px 0 #161b13;
+
+}
+/* Стиль для сообщения об ошибке ввода имени и пароля */
+.msg {
+	font-size: 20px;
+    padding: 10px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.version {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 6px 14px;
+    border-radius: 16px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #2c3e50;
+    font-weight: 500;
+}
+
+.logout-btn {
+    background: #6c757d;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.logout-btn:hover {
+    background: #5a6268;
+}
+
+/*Кнопка очистки фильтра*/
+.clear_filter_button {
+	box-shadow: 0 3px 0 #161b13;
+	transition: background-color 0.3s ease 0s;
+	position: relative;
+	top: 0px;
+	min-width: 150px;
+	margin: 5px; 
+	font-size: 16px;
+	border: 2px solid black; 
+	border-radius: 10px; 
+	padding: 5px;	
+}
+.clear_filter_button:hover {
+/*	background-color: #7a956b;*/
+}
+.clear_filter_button:active{
+	top: 3px;
+	box-shadow: 0 1px 0 #161b13;
+/*	background-color: grey;*/
+}
+
+/* Блок с вкладками Settings и js*/
+.settings_tabs {
+	margin-bottom: 20px;
+}
+#settings_tabs .tab {
+    display: inline-block; /* выстраиваем вкладки в один ряд */
+    padding: 5px 10px;
+    cursor: pointer;
+    position: relative;
+    z-index:5;
+}
+.tabContent {
+    position: relative;
+	min-height: 650px;
+	margin-bottom: 10px;
+    border: 1px solid #707070;
+    top: -1px; 
+    z-index:1;
+    padding: 10px;
+    border-radius: 0 0 3px 3px
+}
+/* Блок с вкладками Settings и js*/
+.config_tabs {
+	margin-bottom: 20px;
+}
+#config_tabs .tab_config {
+    display: inline-block; /* выстраиваем вкладки в один ряд */
+    padding: 5px 10px;
+    cursor: pointer;
+    position: relative;
+    z-index:5;
+}
+.tabContentConfig {
+    position: relative;
+	min-height: 650px;
+	margin-bottom: 10px;
+    border: 1px solid #707070;
+    top: -1px; 
+    z-index:1;
+    padding: 10px;
+    border-radius: 0 0 3px 3px
+}
+
+.whiteborder {
+    border: 1px solid #707070;
+    border-bottom: 1px solid #fff;
+    border-radius: 10px 3px 0  0;
+}
+.hide {
+    display: none;
+}
+.show {
+    display: block;
+}
+
+
+/* Для терминала */
+
+/*
+#terminal {
+    width: 100vw;
+    height: 100vh;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+
+.xterm {
+    padding: 10px;
+}
+
+.xterm-screen {
+    border-radius: 4px;
+}
+
+*/
+
+/* Terminal styles */
+/*
+body {
+    background-color: #1e1e1e;
+    color: #cccccc;
+    font-family: 'Courier New', monospace;
+    margin: 0;
+    padding: 20px;
+    overflow: hidden;
+}
+
+.login-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #1e1e1e;
+}
+
+.login-container {
+    text-align: center;
+    background-color: #252526;
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.login-container h1 {
+    color: #569cd6;
+    margin-bottom: 30px;
+    font-size: 24px;
+}
+
+input, button {
+    background: #3c3c3c;
+    color: #cccccc;
+    border: 1px solid #6c6c6c;
+    padding: 12px;
+    margin: 8px;
+    border-radius: 4px;
+    font-size: 14px;
+    width: 250px;
+    box-sizing: border-box;
+}
+
+input:focus {
+    border-color: #007acc;
+    outline: none;
+}
+
+button {
+    background: #0e639c;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    margin-top: 15px;
+}
+
+button:hover {
+    background: #1177bb;
+}
+*/
+#terminal {
+    outline: none;
+    white-space: pre-wrap;
+    word-break: break-all;
+/*    height: calc(100vh - 40px);*/
+    height: 100vh;
+    overflow-y: auto;
+    background-color: #1e1e1e;
+    color: #cccccc;
+    font-family: 'Courier New', monospace;
+    font-size: 14px;
+    line-height: 1.2;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+#terminal:focus {
+    border-color: #007acc;
+}
+
+/* Стиль для курсора */
+
+#terminal[contenteditable="true"]:focus {
+    caret-color: #cccccc;
+}
+
+/* поддержка ANSI цветов */
+
+.ansi-0 { color: #000; }
+.ansi-1 { color: #c00; }
+.ansi-32 { color: #0c0; }
+.ansi-33 { color: #cc0; }
+.ansi-34 { color: #00c; }
+.ansi-35 { color: #c0c; }
+.ansi-36 { color: #0cc; }
+.ansi-37 { color: #ccc; }

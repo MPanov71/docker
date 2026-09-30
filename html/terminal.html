@@ -1,0 +1,28 @@
+<!-- terminal.html -->
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <title>Терминал</title>
+      <link rel="stylesheet" href="xterm/xterm.css" />
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      overflow: hidden;
+      background: black;
+    }
+    #terminal-container {
+      height: 100vh;
+      width: 100vw;
+    }
+  </style>
+</head>
+<body>
+  <div id="terminal-container"></div>
+    <script src="xterm/xterm.js"></script>
+    <script src="xterm/xterm-addon-fit.js"></script>
+    <script src="./terminal.js"></script>
+</body>
+</html>

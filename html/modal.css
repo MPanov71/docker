@@ -1,0 +1,440 @@
+/* Модальное окно */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+}
+
+.modal-content {
+    background-color: white;
+    position: absolute;
+    padding: 0;
+    border-radius: 12px;
+    width: 1100px;
+    height: 800px;
+    box-shadow: 0 10px 50px rgba(0,0,0,0.3);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    cursor: move;
+}
+
+.modal-header {
+    padding: 20px;
+    border-bottom: 1px solid #e9ecef;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-shrink: 0;
+    cursor: move;
+    background: white;
+    border-radius: 12px 12px 0 0;
+    user-select: none;
+}
+
+.modal-header h2 {
+    margin: 0;
+    color: #2c3e50;
+    cursor: move;
+}
+
+.close {
+    color: #aaa;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.close:hover {
+    color: #000;
+    background: #f8f9fa;
+}
+
+.modal-body {
+    flex: 1;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+/* Закладки */
+.tabs {
+    display: flex;
+    background: #f8f9fa;
+    border-bottom: 1px solid #e9ecef;
+    flex-shrink: 0;
+}
+
+.tab {
+    padding: 15px 30px;
+    cursor: pointer;
+    border: none;
+    background: none;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 500;
+    color: #6c757d;
+    transition: all 0.3s ease;
+}
+
+.tab.active {
+    color: #667eea;
+    border-bottom: 3px solid #667eea;
+    background: white;
+}
+
+.tab-content {
+    flex: 1;
+    padding: 0;
+    display: none;
+    overflow: hidden;
+}
+
+.tab-content.active {
+    display: flex;
+    flex-direction: column;
+}
+
+.tab {
+    transition: opacity 0.3s ease;
+}
+
+.users-tab, .tms-tab {
+    transition: all 0.3s ease;
+}
+
+/* Стили для вкладки Users */
+.users-container {
+    display: flex;
+    flex: 1;
+    padding: 20px;
+    gap: 20px;
+    overflow: hidden;
+    height: 100%;
+}
+
+.users-table-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    overflow: hidden;
+}
+
+.users-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 120px;
+    flex-shrink: 0;
+}
+
+.action-btn {
+    padding: 12px;
+    border: none;
+    border-radius: 6px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 14px;
+}
+
+.delete-btn {
+    background: #dc3545;
+    color: white;
+}
+
+.delete-btn:hover {
+    background: #c82333;
+}
+
+.cancel-btn {
+    background: #6c757d;
+    color: white;
+}
+
+.cancel-btn:hover {
+    background: #5a6268;
+}
+
+.save-btn {
+    background: #28a745;
+    color: white;
+}
+
+.save-btn:hover {
+    background: #218838;
+}
+
+.add-user-form {
+    display: flex;
+    gap: 8px;
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    margin-top: 15px;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.add-user-form .form-group {
+    flex: 1;
+    min-width: 0;
+    margin: 0;
+}
+
+.add-user-form .form-group.note {
+    flex: 2;
+}
+
+.add-user-form .form-group.tid {
+    flex: 0.8;
+}
+
+.add-user-form .form-group.name {
+    flex: 1;
+}
+
+.add-user-form .form-group.password {
+    flex: 1;
+}
+
+.add-user-form .form-group.group {
+    flex: 1;
+}
+
+.add-user-form .form-group.role {
+    flex: 1;
+}
+
+.add-user-form .form-group input, 
+.add-user-form .form-group select {
+    width: 100%;
+    padding: 8px 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-family: 'Montserrat', sans-serif;
+    box-sizing: border-box;
+    font-size: 13px;
+}
+
+.add-btn {
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 500;
+    white-space: nowrap;
+    height: 38px;
+    flex-shrink: 0;
+    font-size: 13px;
+}
+
+.add-btn:hover {
+    background: #0056b3;
+}
+
+#users-table {
+    flex: 1;
+    min-height: 0;
+}
+/* Стили для вкладки Firms */
+.firms-container {
+    display: flex;
+    flex: 1;
+    padding: 20px;
+    gap: 20px;
+    overflow: hidden;
+    height: 100%;
+}
+
+.firms-tables-container {
+    flex: 1;
+    display: flex;
+    gap: 20px;
+    min-width: 0;
+    overflow: hidden;
+}
+
+.firms-table-wrapper {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    overflow: hidden;
+}
+
+.firms-table-wrapper h3 {
+    margin: 0 0 10px 0;
+    color: #2c3e50;
+    font-size: 16px;
+    font-weight: 600;
+    text-align: center;
+}
+
+.firms-add-form {
+    display: flex;
+    gap: 8px;
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    margin-top: 15px;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.firms-add-form .form-group {
+    flex: 1;
+    min-width: 0;
+    margin: 0;
+}
+
+.firms-add-form .form-group.num {
+    flex: 0.6;
+}
+
+.firms-add-form .form-group.name {
+    flex: 1.4;
+}
+
+.firms-add-form .form-group input {
+    width: 100%;
+    padding: 8px 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-family: 'Montserrat', sans-serif;
+    box-sizing: border-box;
+    font-size: 13px;
+}
+
+.firms-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 120px;
+    flex-shrink: 0;
+}
+
+#firms-table, #branches-table {
+    flex: 1;
+    min-height: 0;
+}
+/* Стили для вкладки TMS Servers */
+.tms-container {
+    display: flex;
+    flex: 1;
+    padding: 20px;
+    gap: 20px;
+    overflow: hidden;
+    height: 100%;
+}
+
+.tms-table-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    overflow: hidden;
+}
+
+.tms-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 120px;
+    flex-shrink: 0;
+}
+
+.add-tms-form {
+    display: flex;
+    gap: 8px;
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    margin-top: 15px;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.add-tms-form .form-group {
+    flex: 1;
+    min-width: 0;
+    margin: 0;
+}
+
+.add-tms-form .form-group.name {
+    flex: 1;
+}
+
+.add-tms-form .form-group.id {
+    flex: 0.8;
+}
+
+.add-tms-form .form-group.address {
+    flex: 1;
+}
+
+.add-tms-form .form-group.port {
+    flex: 0.6;
+}
+
+.add-tms-form .form-group.note {
+    flex: 2;
+}
+
+.add-tms-form .form-group input {
+    width: 100%;
+    padding: 8px 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-family: 'Montserrat', sans-serif;
+    box-sizing: border-box;
+    font-size: 13px;
+}
+
+#TMS-table {
+    flex: 1;
+    min-height: 0;
+}
+
+
+
+
+
+#servers-table {
+    flex: 1;
+    min-height: 0;
+}
+
+
+/* Стиль для перемещаемого окна */
+.modal-dragging {
+    opacity: 0.9;
+    box-shadow: 0 15px 60px rgba(0,0,0,0.4);
+}
+
+/* Запрещаем выделение текста в таблицах */
+#users-table .tabulator-table,
+#TMS-table .tabulator-table {
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+
+/* Подсветка выбранной строки */
+.tabulator-row.tabulator-selected {
+    background-color: #e3f2fd !important;
+}

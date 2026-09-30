@@ -1,0 +1,66 @@
+services:
+  sctms_v2:
+    build:
+        context: ./
+        dockerfile: ./sctms/Dockerfile
+    image: zanova/sctms_v2
+    container_name: sctms_v2
+    restart: always
+    environment: 
+      - TZ=Europe/Moscow
+    ports:
+      - "1020:1020"    
+    volumes:
+      - ./sc:/opt
+    networks:
+      scnet:
+        aliases:
+          - sctms
+
+  frontend:
+    build:
+        context: ./
+        dockerfile: ./frontend/Dockerfile
+    image: zanova/frontend
+    container_name: frontend
+    restart: always
+    environment: 
+      - TZ=Europe/Moscow
+    ports:
+      - "8080:80"
+    volumes:
+      - ./sc:/opt
+    depends_on:
+      - backend
+    networks:
+      scnet:
+        aliases:
+          - frontend
+
+  backend:
+    build:
+        context: ./backend
+        dockerfile: Dockerfile
+    image: zanova/backend
+    container_name: backend
+    restart: always
+    environment: 
+      - TZ=Europe/Moscow
+      - NODE_ENV=production
+      - PORT=3000
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./sc:/opt
+    depends_on:
+      - sctms_v2
+    networks:
+      scnet:
+        aliases:
+          - backend
+
+
+networks:
+  scnet:
+    name: softcase_network
+    driver: bridge

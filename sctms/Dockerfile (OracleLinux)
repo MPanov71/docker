@@ -1,0 +1,10 @@
+FROM oraclelinux:8-slim
+
+MAINTAINER SoftCase
+
+RUN microdnf update && microdnf install procps && microdnf install iproute
+
+COPY sctms/keys.sksn /opt/sctms/
+COPY sctms/sctms /opt/sctms/
+
+ENTRYPOINT ["/opt/sctms/sctms"]

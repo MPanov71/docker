@@ -1,0 +1,228 @@
+/*
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Montserrat', Arial, sans-serif;
+    min-height: 100vh;
+}
+*/
+/* Общие стили для кнопок */
+/*
+.btn {
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+.btn-secondary {
+    background: #6c757d;
+    color: white;
+}
+
+.btn-secondary:hover {
+    background: #5a6268;
+}
+
+.btn-success {
+    background: #28a745;
+    color: white;
+}
+
+.btn-success:hover {
+    background: #218838;
+}
+
+.btn-danger {
+    background: #dc3545;
+    color: white;
+}
+
+.btn-danger:hover {
+    background: #c82333;
+}
+*/
+/* Общие стили для форм */
+/*
+.form-group {
+    text-align: left;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: #2c3e50;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.form-group input, .form-group select {
+    width: 100%;
+    padding: 12px 16px;
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.form-group input:focus, .form-group select:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.loading {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+h1 {
+    margin: 0;
+    color: #2c3e50;
+    font-size: 32px;
+    font-weight: 700;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: -0.5px;
+}
+*/
+/* Футер модального окна */
+/*
+.modal-footer {
+    padding: 15px 20px;
+    border-top: 1px solid #e9ecef;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-shrink: 0;
+}
+
+.range-btn {
+    background: #ffc107;
+    color: #212529;
+}
+
+.range-btn:hover {
+    background: #e0a800;
+}
+*/
+
+
+/* Terminal styles */
+body {
+    background-color: #1e1e1e;
+    color: #cccccc;
+    font-family: 'Courier New', monospace;
+    margin: 0;
+    padding: 20px;
+    overflow: hidden;
+}
+
+.login-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #1e1e1e;
+}
+
+.login-container {
+    text-align: center;
+    background-color: #252526;
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.login-container h1 {
+    color: #569cd6;
+    margin-bottom: 30px;
+    font-size: 24px;
+}
+
+input, button {
+    background: #3c3c3c;
+    color: #cccccc;
+    border: 1px solid #6c6c6c;
+    padding: 12px;
+    margin: 8px;
+    border-radius: 4px;
+    font-size: 14px;
+    width: 250px;
+    box-sizing: border-box;
+}
+
+input:focus {
+    border-color: #007acc;
+    outline: none;
+}
+
+button {
+    background: #0e639c;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    margin-top: 15px;
+}
+
+button:hover {
+    background: #1177bb;
+}
+
+#terminal {
+    outline: none;
+    white-space: pre-wrap;
+    word-break: break-all;
+    height: calc(100vh - 40px);
+    overflow-y: auto;
+    background-color: #1e1e1e;
+    color: #cccccc;
+    font-family: 'Courier New', monospace;
+    font-size: 14px;
+    line-height: 1.2;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+#terminal:focus {
+    border-color: #007acc;
+}
+
+/* Стиль для курсора */
+#terminal[contenteditable="true"]:focus {
+    caret-color: #cccccc;
+}
+
+/* поддержка ANSI цветов */
+.ansi-0 { color: #000; }
+.ansi-1 { color: #c00; }
+.ansi-32 { color: #0c0; }
+.ansi-33 { color: #cc0; }
+.ansi-34 { color: #00c; }
+.ansi-35 { color: #c0c; }
+.ansi-36 { color: #0cc; }
+.ansi-37 { color: #ccc; }
